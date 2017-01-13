@@ -1,0 +1,14 @@
+#compdef ng
+ 
+function getNodeGroups() {
+	NODES=""
+	while read line
+	do
+		NODES="$NODES $line"
+	done < /Users/gpetroski/.zsh/completion/.sshn_nodegroups
+	echo $NODES
+}
+
+NODE_GROUPS=$(getNodeGroups)
+
+_arguments "1: :($NODE_GROUPS)"

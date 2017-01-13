@@ -1,0 +1,7 @@
+#!/bin/bash
+
+hostname=$1
+
+sync-first $hostname
+
+ssh $hostname

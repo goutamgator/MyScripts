@@ -1,0 +1,31 @@
+#!/bin/bash
+# Open a cssh session to a given nodegroup in nventory
+#
+# Requires the nventory-client rubygem:
+# $ gem install nventory-client
+#
+# Requires ~/.nventory.conf
+# echo "server = http://nventory.corp.eharmony.com" > ~/.nventory.conf
+
+if [ 1 == $# ];
+then
+    NODE_GROUP="$1"
+else
+    echo "Must provide a node group"
+    exit 1
+fi
+
+nodehosts=`nv --nodegroup $NODE_GROUP 2>/dev/null | grep eharmony.com | awk '{ print length, $0 }' | sort -n | cut -d" " -f2- | tr -d '\n'`
+
+if [ `echo $nodehosts | wc -w` -eq 0 ]
+then
+	echo "Invalid nodegroup"
+	exit -1
+else
+	if [ `grep -c $NODE_GROUP /Users/gpetroski/.zsh/completion/.sshn_nodegroups` -eq 0 ]
+	then
+		echo $NODE_GROUP >> /Users/gpetroski/.zsh/completion/.sshn_nodegroups
+	fi
+fi
+
+echo "$nodehosts"

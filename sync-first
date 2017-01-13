@@ -1,0 +1,13 @@
+#!/bin/bash
+
+HOSTNAME=$1
+FORCE_SYNC=$2
+
+if [ `grep -c $HOSTNAME ~/.ssh/known_hosts` -eq 0 ]
+then
+	ssh-keyscan $HOSTNAME >> ~/.ssh/known_hosts
+	sync-profile $HOSTNAME
+elif [ $FORCE_SYNC -eq 1 ]
+then
+	sync-profile $HOSTNAME
+fi
